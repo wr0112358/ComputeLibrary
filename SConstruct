@@ -82,7 +82,7 @@ env.Append(CXXFLAGS = ['-Wno-deprecated-declarations','-Wall','-DARCH_ARM',
          '-Wextra','-Wno-unused-parameter','-pedantic','-Wdisabled-optimization','-Wformat=2',
          '-Winit-self','-Wstrict-overflow=2','-Wswitch-default',
          '-fpermissive','-std=gnu++11','-Wno-vla','-Woverloaded-virtual',
-         '-Wctor-dtor-privacy','-Wsign-promo','-Weffc++','-Wno-format-nonliteral','-Wno-overlength-strings','-Wno-strict-overflow'])
+         '-Wctor-dtor-privacy','-Wsign-promo','-Weffc++','-Wno-format-nonliteral','-Wno-overlength-strings','-Wno-strict-overflow', '-Wno-error=implicit-fallthrough'])
 
 env.Append(CPPDEFINES = ['_GLIBCXX_USE_NANOSLEEP'])
 
