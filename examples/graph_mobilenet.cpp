@@ -99,8 +99,8 @@ public:
               << BatchNormalizationLayer(
                   get_weights_accessor(data_path, "/cnn_data/mobilenet_v1_model/Conv2d_0_BatchNorm_moving_mean.npy"),
                   get_weights_accessor(data_path, "/cnn_data/mobilenet_v1_model/Conv2d_0_BatchNorm_moving_variance.npy"),
-                  get_weights_accessor(data_path, "/cnn_data/mobilenet_v1_model/Conv2d_0_BatchNorm_beta.npy"),
                   get_weights_accessor(data_path, "/cnn_data/mobilenet_v1_model/Conv2d_0_BatchNorm_gamma.npy"),
+                  get_weights_accessor(data_path, "/cnn_data/mobilenet_v1_model/Conv2d_0_BatchNorm_beta.npy"),
                   0.001f)
 
               << ActivationLayer(ActivationLayerInfo(ActivationLayerInfo::ActivationFunction::BOUNDED_RELU, 6.f))
@@ -151,8 +151,8 @@ private:
            << BatchNormalizationLayer(
                get_weights_accessor(data_path, total_path + "depthwise_BatchNorm_moving_mean.npy"),
                get_weights_accessor(data_path, total_path + "depthwise_BatchNorm_moving_variance.npy"),
-               get_weights_accessor(data_path, total_path + "depthwise_BatchNorm_beta.npy"),
                get_weights_accessor(data_path, total_path + "depthwise_BatchNorm_gamma.npy"),
+               get_weights_accessor(data_path, total_path + "depthwise_BatchNorm_beta.npy"),
                0.001f)
            << ActivationLayer(ActivationLayerInfo(ActivationLayerInfo::ActivationFunction::BOUNDED_RELU, 6.f))
            << ConvolutionLayer(
@@ -163,8 +163,8 @@ private:
            << BatchNormalizationLayer(
                get_weights_accessor(data_path, total_path + "pointwise_BatchNorm_moving_mean.npy"),
                get_weights_accessor(data_path, total_path + "pointwise_BatchNorm_moving_variance.npy"),
-               get_weights_accessor(data_path, total_path + "pointwise_BatchNorm_beta.npy"),
                get_weights_accessor(data_path, total_path + "pointwise_BatchNorm_gamma.npy"),
+               get_weights_accessor(data_path, total_path + "pointwise_BatchNorm_beta.npy"),
                0.001f)
            << ActivationLayer(ActivationLayerInfo(ActivationLayerInfo::ActivationFunction::BOUNDED_RELU, 6.f));
 
