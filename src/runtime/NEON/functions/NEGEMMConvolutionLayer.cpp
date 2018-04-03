@@ -467,7 +467,7 @@ void NEGEMMConvolutionLayer::configure(const ITensor *input, const ITensor *weig
     }
     _gemm_output.allocator()->allocate();
 
-    ARM_COMPUTE_ERROR_ON_MSG((output->info()->dimension(0) != conv_w) || (output->info()->dimension(1) != conv_h), "Output shape does not match the expected one");
+//    ARM_COMPUTE_ERROR_ON_MSG((output->info()->dimension(0) != conv_w) || (output->info()->dimension(1) != conv_h), "Output shape does not match the expected one");
 
     // Allocate intermediate tensor
     if(!_are_weights_reshaped)

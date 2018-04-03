@@ -325,8 +325,8 @@ const std::pair<unsigned int, unsigned int> arm_compute::scaled_dimensions(unsig
     {
         --h;
     }
-    ARM_COMPUTE_ERROR_ON(((w - 1) * stride_x) >= (width + pad_left));
-    ARM_COMPUTE_ERROR_ON(((h - 1) * stride_y) >= (height + pad_top));
+    //ARM_COMPUTE_ERROR_ON(((w - 1) * stride_x) >= (width + pad_left));
+    //ARM_COMPUTE_ERROR_ON(((h - 1) * stride_y) >= (height + pad_top));
 
     return std::make_pair(w, h);
 }
