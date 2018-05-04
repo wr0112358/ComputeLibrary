@@ -400,7 +400,7 @@ void NEGEMMConvolutionLayer::configure(const ITensor *input, const ITensor *weig
 
     // Configure kernels
     // Configure im2col
-    _input_im2col_kernel.configure(input, &_input_im2col_reshaped, Size2D(kernel_width, kernel_height), conv_info, _append_bias, is_transposed);
+    _input_im2col_kernel.configure(input, &_input_im2col_reshaped, Size2D(kernel_width, kernel_height), conv_info, _append_bias, false, false, is_transposed);
 
     // Configure matrix multiply
     if(_mm_optimised_kernel != nullptr)
