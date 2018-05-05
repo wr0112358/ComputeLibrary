@@ -296,7 +296,7 @@ public:
      */
     void reset(size_t dimension);
 
-private:
+protected:
     uint8_t *_ptr;
 
     class Dimension
