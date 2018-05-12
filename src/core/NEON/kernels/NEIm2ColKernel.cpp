@@ -31,7 +31,7 @@
 #include "arm_compute/core/TensorInfo.h"
 #include "arm_compute/core/Types.h"
 #include "arm_compute/core/Validate.h"
-
+#include "support/ToolchainSupport.h"
 #include "arm_compute/core/utils/misc/ShapeCalculator.h"
 
 #include <arm_neon.h>
@@ -44,6 +44,23 @@ using namespace arm_compute;
 
 namespace
 {
+
+template<typename T>
+inline std::string to_string(const arm_compute::Dimensions<T> &shape)
+{
+    std::string s;
+    s.reserve(64);
+    s.append("(");
+    for(size_t i = 0; i < shape.num_dimensions(); i++) {
+        s.append(support::cpp11::to_string(shape[i]));
+        if(i == shape.num_dimensions() - 1)
+            s.append(")");
+        else
+            s.append(", ");
+    }
+    return s;
+}
+
 Status validate_arguments(const ITensorInfo *input, const ITensorInfo *output, const Size2D &kernel_dims, const PadStrideInfo &conv_info,
                           bool has_bias, bool is_fully_connected, bool is_flatten, bool is_transposed)
 {
@@ -70,6 +87,8 @@ Status validate_arguments(const ITensorInfo *input, const ITensorInfo *output, c
         const int num_input_dimensions = input->tensor_shape().num_dimensions() - num_batch_dimensions;
 
         TensorInfo expected_output = output->clone()->set_tensor_shape(misc::shape_calculator::compute_im2col_shape(input, num_input_dimensions));
+        std::cout << "NEIm2ColKernel.cpp exp-shape: " << to_string(expected_output.tensor_shape()) << "\n";
+        std::cout << "NEIm2ColKernel.cpp out-shape: " << to_string(output->tensor_shape()) << "\n";
         ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_SHAPES(&expected_output, output);
     }
 
