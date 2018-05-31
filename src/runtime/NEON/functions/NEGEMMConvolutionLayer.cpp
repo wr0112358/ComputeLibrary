@@ -183,6 +183,8 @@ Status validate_and_initialize_values(const ITensorInfo *input, const ITensorInf
     const int  idx_height  = get_data_layout_dimension_index(data_layout, DataLayoutDimension::HEIGHT);
     const int  idx_channel = get_data_layout_dimension_index(data_layout, DataLayoutDimension::CHANNEL);
 
+    printf("NEGEMMConvolutionLayer::validate_and_initialize_values %ld != %ld ??\n",
+           weights->dimension(idx_channel), input->dimension(idx_channel));
     ARM_COMPUTE_RETURN_ERROR_ON(!weights_info.are_reshaped() && weights->dimension(idx_channel) != input->dimension(idx_channel));
     ARM_COMPUTE_RETURN_ERROR_ON(weights->num_dimensions() > 4);
     ARM_COMPUTE_RETURN_ERROR_ON(weights_info.are_reshaped() && is_data_type_quantized_asymmetric(input->data_type()));
