@@ -115,16 +115,7 @@ void NEDeconvolutionLayer::configure(ITensor *input, const ITensor *weights, con
 
     // configure scale function
     // Init and allocate intermmidiate tensor for output, same size as input but the first two axis are the same as the output tensor
-    auto xshape = input->info()->tensor_shape();
-    arm_compute::TensorInfo xinfo = arm_compute::TensorInfo
-        (xshape, input->info()->num_channels(), input->info()->data_type(),
-         input->info()->fixed_point_position());
-    printf("NEDeconvolutionLayer::configure OFM: %ld -> %ld\n", xshape[2], output->info()->tensor_shape()[2]);
-    xshape[2] = output->info()->tensor_shape()[2];
-    xinfo.set_tensor_shape(xshape);
-
-    //const TensorInfo scale_out_info(compute_deconvolution_shape(*input->info(), stride_x, stride_y, inner_border_right, inner_border_top, info), 1, input->info()->data_type(),
-    const TensorInfo scale_out_info(compute_deconvolution_shape(xinfo, stride_x, stride_y, inner_border_right, inner_border_top, info), 1, input->info()->data_type(),
+    const TensorInfo scale_out_info(compute_deconvolution_shape(*input->info(), stride_x, stride_y, inner_border_right, inner_border_top, info), 1, input->info()->data_type(),
                                     input->info()->fixed_point_position());
     _scaled_output.allocator()->init(scale_out_info);
 
