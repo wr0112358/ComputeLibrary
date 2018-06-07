@@ -131,6 +131,18 @@ clCreateCommandQueue(cl_context                     context,
 	return NULL;
 }
 
+cl_command_queue
+clCreateCommandQueueWithProperties(cl_context                     context,
+				cl_device_id                   device,
+				const cl_command_queue_properties    *properties,
+				cl_int *                       errcode_ret)
+{
+	PRINT_STUB_ERROR;
+	if( errcode_ret ) *errcode_ret = CL_OUT_OF_RESOURCES;
+	return NULL;
+}
+
+
 cl_int
 clRetainCommandQueue(cl_command_queue command_queue)
 {
