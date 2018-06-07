@@ -40,6 +40,7 @@ CLBufferAllocator::CLBufferAllocator(cl::Context context)
 void *CLBufferAllocator::allocate(size_t size, size_t alignment)
 {
     ARM_COMPUTE_UNUSED(alignment);
+    printf("CLBufferAllocator::alignment %zu\n", size);
     cl_mem buf = clCreateBuffer(_context.get(), CL_MEM_ALLOC_HOST_PTR | CL_MEM_READ_WRITE, size, nullptr, nullptr);
     return static_cast<void *>(buf);
 }
@@ -53,5 +54,6 @@ void CLBufferAllocator::free(void *ptr)
 std::unique_ptr<IMemoryRegion> CLBufferAllocator::make_region(size_t size, size_t alignment)
 {
     ARM_COMPUTE_UNUSED(alignment);
+    printf("CLBufferAllocator::make_region %zu\n", size);
     return arm_compute::support::cpp14::make_unique<CLBufferMemoryRegion>(_context, CL_MEM_ALLOC_HOST_PTR | CL_MEM_READ_WRITE, size);
 }

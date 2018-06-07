@@ -52,6 +52,7 @@ void ISimpleLifetimeManager::register_group(IMemoryGroup *group)
 
 void ISimpleLifetimeManager::start_lifetime(void *obj)
 {
+    printf("ISimpleLifetimeManager::start_lifetime %p\n", obj);
     ARM_COMPUTE_ERROR_ON(obj == nullptr);
     ARM_COMPUTE_ERROR_ON_MSG(_active_elements.find(obj) != std::end(_active_elements), "Memory object is already registered!");
 
@@ -72,6 +73,7 @@ void ISimpleLifetimeManager::start_lifetime(void *obj)
 
 void ISimpleLifetimeManager::end_lifetime(void *obj, void **handle, size_t size)
 {
+    printf("ISimpleLifetimeManager::end_lifetime %p %zu\n", obj, size);
     ARM_COMPUTE_ERROR_ON(obj == nullptr);
 
     // Find object
