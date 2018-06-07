@@ -74,13 +74,11 @@ void CLTensorAllocator::allocate()
 
     if(_associated_memory_group == nullptr)
     {
-        printf("CLTensorAllocator::allocate _associated_memory_group == nullptr\n");
         ARM_COMPUTE_ERROR_ON(_memory.region()->cl_data().get() != nullptr);
         _memory = CLMemory(allocate_region(CLScheduler::get().context(), info().total_size(), 0));
     }
     else
     {
-        printf("CLTensorAllocator::allocate _associated_memory_group != nullptr\n");
         _associated_memory_group->finalize_memory(_owner, _memory.region()->handle(), info().total_size());
         _memory.region()->set_size(info().total_size());
     }

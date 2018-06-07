@@ -31,7 +31,6 @@ namespace arm_compute
 ICLMemoryRegion::ICLMemoryRegion(cl::Context ctx, size_t size)
     : IMemoryRegion(size), _ctx(std::move(ctx)), _mapping(nullptr), _mem()
 {
-    printf("ICLMemoryRegion %zu\n", size);
 }
 
 const cl::Buffer &ICLMemoryRegion::cl_data() const
@@ -57,7 +56,6 @@ void **ICLMemoryRegion::handle()
 CLBufferMemoryRegion::CLBufferMemoryRegion(cl::Context ctx, cl_mem_flags flags, size_t size)
     : ICLMemoryRegion(std::move(ctx), size)
 {
-    printf("CLBufferMemoryRegion %zu\n", size);
     if(_size != 0)
     {
         _mem = cl::Buffer(_ctx, flags, _size);
@@ -86,7 +84,6 @@ void CLBufferMemoryRegion::unmap(cl::CommandQueue &q)
 ICLSVMMemoryRegion::ICLSVMMemoryRegion(cl::Context ctx, cl_mem_flags flags, size_t size, size_t alignment)
     : ICLMemoryRegion(std::move(ctx), size), _ptr(nullptr)
 {
-    printf("ICLSVMMemoryRegion %zu\n", size);
     if(size != 0)
     {
         _ptr = clSVMAlloc(_ctx.get(), flags, size, alignment);
@@ -115,7 +112,6 @@ void *ICLSVMMemoryRegion::ptr()
 CLCoarseSVMMemoryRegion::CLCoarseSVMMemoryRegion(cl::Context ctx, cl_mem_flags flags, size_t size, size_t alignment)
     : ICLSVMMemoryRegion(std::move(ctx), flags, size, alignment)
 {
-    printf("CLCoarseSVMMemoryRegion %zu\n", size);
 }
 
 void *CLCoarseSVMMemoryRegion::map(cl::CommandQueue &q, bool blocking)
@@ -136,7 +132,6 @@ void CLCoarseSVMMemoryRegion::unmap(cl::CommandQueue &q)
 CLFineSVMMemoryRegion::CLFineSVMMemoryRegion(cl::Context ctx, cl_mem_flags flags, size_t size, size_t alignment)
     : ICLSVMMemoryRegion(std::move(ctx), flags, size, alignment)
 {
-    printf("CLFineSVMMemoryRegion %zu\n", size);
 }
 
 void *CLFineSVMMemoryRegion::map(cl::CommandQueue &q, bool blocking)
