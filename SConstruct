@@ -87,7 +87,7 @@ if env['os'] == 'bare_metal':
 
 env.Append(CXXFLAGS = ['-Wno-deprecated-declarations','-Wall','-DARCH_ARM',
          '-Wextra','-Wno-unused-parameter','-pedantic','-Wdisabled-optimization','-Wformat=2',
-         '-Winit-self','-Wstrict-overflow=2','-Wswitch-default',
+         '-Winit-self','-Wstrict-overflow=2','-Wswitch-default','-D__ANDROID_API__=21',
          '-fpermissive','-std=gnu++11','-Wno-vla','-Woverloaded-virtual',
          '-Wctor-dtor-privacy','-Wsign-promo','-Weffc++','-Wno-format-nonliteral','-Wno-overlength-strings','-Wno-strict-overflow','-Wno-implicit-fallthrough'])
 
