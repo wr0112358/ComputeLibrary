@@ -84,14 +84,17 @@ Status NEConvolutionLayer::validate(const ITensorInfo *input, const ITensorInfo 
     {
         case ConvolutionMethod::WINOGRAD:
             //Validate Winograd
+    printf("%s: %d\n", __FILE__, __LINE__);
             ARM_COMPUTE_RETURN_ON_ERROR(NEWinogradConvolutionLayer::validate(input, weights, biases, output, conv_info, act_info, enable_fast_math));
             break;
         case ConvolutionMethod::GEMM:
             //Validate Gemm-based Convolution
+    printf("%s: %d\n", __FILE__, __LINE__);
             ARM_COMPUTE_RETURN_ON_ERROR(NEGEMMConvolutionLayer::validate(input, weights, biases, output, conv_info, weights_info, dilation, act_info));
             break;
         case ConvolutionMethod::DIRECT:
             //Validate Gemm-based Convolution
+    printf("%s: %d\n", __FILE__, __LINE__);
             ARM_COMPUTE_RETURN_ON_ERROR(NEDirectConvolutionLayer::validate(input, weights, biases, output, conv_info, act_info));
         default:
             ARM_COMPUTE_ERROR("Not supported.");

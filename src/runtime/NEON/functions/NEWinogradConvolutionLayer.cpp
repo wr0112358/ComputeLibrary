@@ -53,6 +53,7 @@ inline Tensor4DShape internal_get_input_shape(const arm_compute::ITensor *input)
 
 Status validate_arguments(const ITensorInfo *input, const ITensorInfo *weights, const ITensorInfo *biases, const ITensorInfo *output, const PadStrideInfo &conv_info)
 {
+    printf("%s: %d\n", __FILE__, __LINE__);
     const DataLayout   data_layout = input->data_layout();
     const unsigned int width_idx   = get_data_layout_dimension_index(data_layout, DataLayoutDimension::WIDTH);
     const unsigned int height_idx  = get_data_layout_dimension_index(data_layout, DataLayoutDimension::HEIGHT);
@@ -72,6 +73,7 @@ Status validate_arguments(const ITensorInfo *input, const ITensorInfo *weights, 
         ARM_COMPUTE_RETURN_ERROR_ON(biases->num_dimensions() > 1);
     }
 
+    printf("%s: %d\n", __FILE__, __LINE__);
     return Status{};
 }
 
@@ -331,8 +333,11 @@ void NEWinogradConvolutionLayer::run()
 Status NEWinogradConvolutionLayer::validate(const ITensorInfo *input, const ITensorInfo *weights, const ITensorInfo *biases, const ITensorInfo *output, const PadStrideInfo &conv_info,
                                             const ActivationLayerInfo &act_info, bool enable_fast_math)
 {
+    printf("%s: %d\n", __FILE__, __LINE__);
     ARM_COMPUTE_RETURN_ERROR_ON_NULLPTR(input, weights, output);
+    printf("%s: %d\n", __FILE__, __LINE__);
     ARM_COMPUTE_RETURN_ON_ERROR(validate_arguments(input, weights, biases, output, conv_info));
+    printf("%s: %d\n", __FILE__, __LINE__);
 
     // Get indices for the width and height
     const size_t idx_width  = get_data_layout_dimension_index(input->data_layout(), DataLayoutDimension::WIDTH);
@@ -347,6 +352,7 @@ Status NEWinogradConvolutionLayer::validate(const ITensorInfo *input, const ITen
     if(!enable_fast_math)
     {
         ARM_COMPUTE_RETURN_ERROR_ON_MSG(check_support_fast_math(output_tile, kernel_size), "This Winograd configuration requires enable_fast_math=true");
+    printf("%s: %d\n", __FILE__, __LINE__);
     }
 
     const WinogradInfo winograd_info = WinogradInfo(output_tile,
@@ -450,6 +456,7 @@ Status NEWinogradConvolutionLayer::validate(const ITensorInfo *input, const ITen
     {
         NEActivationLayer::validate(output, nullptr, act_info);
     }
+    printf("%s: %d\n", __FILE__, __LINE__);
     return Status{};
 }
 

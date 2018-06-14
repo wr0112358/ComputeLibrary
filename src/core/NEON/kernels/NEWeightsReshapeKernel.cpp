@@ -105,28 +105,44 @@ TensorShape get_output_shape(const ITensorInfo *input, bool has_bias)
 
 Status validate_arguments(const ITensorInfo *input, const ITensorInfo *biases, const ITensorInfo *output)
 {
+    printf("%s: %d\n", __FILE__, __LINE__);
     ARM_COMPUTE_RETURN_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(input, 1, DataType::QS8, DataType::QASYMM8, DataType::QS16, DataType::F16, DataType::F32);
+    printf("%s: %d\n", __FILE__, __LINE__);
     ARM_COMPUTE_RETURN_ERROR_ON_NULLPTR(output);
+    printf("%s: %d\n", __FILE__, __LINE__);
 
     if(biases != nullptr)
     {
+    printf("%s: %d\n", __FILE__, __LINE__);
         ARM_COMPUTE_RETURN_ERROR_ON(is_data_type_quantized_asymmetric(input->data_type()));
+    printf("%s: %d\n", __FILE__, __LINE__);
         ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_DATA_TYPES(input, biases);
+    printf("%s: %d\n", __FILE__, __LINE__);
         ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_FIXED_POINT(input, biases);
+    printf("%s: %d\n", __FILE__, __LINE__);
         ARM_COMPUTE_RETURN_ERROR_ON((input->num_dimensions() == 4) && (biases->num_dimensions() != 1));
+    printf("%s: %d\n", __FILE__, __LINE__);
         ARM_COMPUTE_RETURN_ERROR_ON((input->num_dimensions() == 5) && (biases->num_dimensions() != 2));
+    printf("%s: %d\n", __FILE__, __LINE__);
         ARM_COMPUTE_RETURN_ERROR_ON((input->num_dimensions() == 4) && (biases->dimension(0) != input->tensor_shape()[3]));
+    printf("%s: %d\n", __FILE__, __LINE__);
         ARM_COMPUTE_RETURN_ERROR_ON((input->num_dimensions() == 5) && (biases->dimension(0) != input->tensor_shape()[3] || biases->dimension(1) != input->tensor_shape()[4]));
+    printf("%s: %d\n", __FILE__, __LINE__);
     }
 
     // Checks performed when output is configured
     if(output->total_size() != 0)
     {
+    printf("%s: %d\n", __FILE__, __LINE__);
         ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_DIMENSIONS(output->tensor_shape(), get_output_shape(input, biases != nullptr));
+    printf("%s: %d\n", __FILE__, __LINE__);
         ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_DATA_TYPES(input, output);
+    printf("%s: %d\n", __FILE__, __LINE__);
         ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_FIXED_POINT(input, output);
+    printf("%s: %d\n", __FILE__, __LINE__);
     }
 
+    printf("%s: %d\n", __FILE__, __LINE__);
     return Status{};
 }
 

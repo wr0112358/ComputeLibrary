@@ -1415,20 +1415,31 @@ inline Status validate_arguments(const ITensorInfo *input0, const ITensorInfo *i
 {
     ARM_COMPUTE_UNUSED(alpha);
 
+    printf("%s: %d\n", __FILE__, __LINE__);
     ARM_COMPUTE_RETURN_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(input0, 1, DataType::F16, DataType::F32, DataType::QS8, DataType::QS16);
+    printf("%s: %d\n", __FILE__, __LINE__);
     ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_DATA_TYPES(input0, input1, output);
+    printf("%s: %d\n", __FILE__, __LINE__);
     ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_FIXED_POINT(input0, input1, output);
+    printf("%s: %d\n", __FILE__, __LINE__);
 
     if(!is_interleaved)
     {
+    printf("%s: %d\n", __FILE__, __LINE__);
         ARM_COMPUTE_RETURN_ERROR_ON(input0->dimension(0) != input1->dimension(1));
+    printf("%s: %d\n", __FILE__, __LINE__);
 
         if(output->total_size() != 0)
         {
+    printf("%s: %d\n", __FILE__, __LINE__);
             ARM_COMPUTE_RETURN_ERROR_ON(input1->dimension(0) != output->dimension(0));
+    printf("%s: %d\n", __FILE__, __LINE__);
             ARM_COMPUTE_RETURN_ERROR_ON(input0->dimension(1) != output->dimension(1));
+    printf("%s: %d\n", __FILE__, __LINE__);
             ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_DATA_TYPES(input0, output);
+    printf("%s: %d\n", __FILE__, __LINE__);
             ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_FIXED_POINT(input0, output);
+    printf("%s: %d\n", __FILE__, __LINE__);
         }
     }
     else
@@ -1446,7 +1457,9 @@ inline Status validate_arguments(const ITensorInfo *input0, const ITensorInfo *i
 
         const TensorInfo tensor_info0          = input0->clone()->set_tensor_shape(tensor_shape0);
         const TensorInfo tensor_info_reshaped0 = input0->clone()->set_tensor_shape(misc::shape_calculator::compute_interleaved_shape(tensor_info0, mult_interleave4x4_height));
+    printf("%s: %d\n", __FILE__, __LINE__);
         ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_SHAPES(input0, &tensor_info_reshaped0);
+    printf("%s: %d\n", __FILE__, __LINE__);
 
         if(n != 0) /* Transpose */
         {
@@ -1456,18 +1469,27 @@ inline Status validate_arguments(const ITensorInfo *input0, const ITensorInfo *i
 
             const TensorInfo tensor_info1          = input1->clone()->set_tensor_shape(tensor_shape1);
             const TensorInfo tensor_info_reshaped1 = input1->clone()->set_tensor_shape(misc::shape_calculator::compute_transpose1xW_with_element_size_shape(tensor_info1, mult_transpose1xW_width));
+    printf("%s: %d\n", __FILE__, __LINE__);
             ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_SHAPES(input1, &tensor_info_reshaped1);
+    printf("%s: %d\n", __FILE__, __LINE__);
         }
 
         if(output->total_size() != 0)
         {
             if(n != 0)
             {
+    printf("%s: %d\n", __FILE__, __LINE__);
                 ARM_COMPUTE_RETURN_ERROR_ON(output->dimension(0) != static_cast<size_t>(n));
+    printf("%s: %d\n", __FILE__, __LINE__);
             }
+
+    printf("%s: %d\n", __FILE__, __LINE__);
             ARM_COMPUTE_RETURN_ERROR_ON(output->dimension(1) != static_cast<size_t>(m));
+    printf("%s: %d\n", __FILE__, __LINE__);
             ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_DATA_TYPES(input0, output);
+    printf("%s: %d\n", __FILE__, __LINE__);
             ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_FIXED_POINT(input0, output);
+    printf("%s: %d\n", __FILE__, __LINE__);
         }
     }
 
@@ -1614,8 +1636,11 @@ void NEGEMMMatrixMultiplyKernel::configure(const ITensor *input0, const ITensor 
 Status NEGEMMMatrixMultiplyKernel::validate(const ITensorInfo *input0, const ITensorInfo *input1, const ITensorInfo *output, float alpha, bool is_interleaved,
                                             const GEMMReshapeInfo &reshape_info)
 {
+    printf("%s: %d\n", __FILE__, __LINE__);
     ARM_COMPUTE_RETURN_ON_ERROR(validate_arguments(input0, input1, output, alpha, is_interleaved, reshape_info));
+    printf("%s: %d\n", __FILE__, __LINE__);
     ARM_COMPUTE_RETURN_ON_ERROR(validate_and_configure_window(input0->clone().get(), input1->clone().get(), output->clone().get()).first);
+    printf("%s: %d\n", __FILE__, __LINE__);
 
     return Status{};
 }
