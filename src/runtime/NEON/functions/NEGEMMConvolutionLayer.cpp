@@ -90,18 +90,12 @@ void NEConvolutionLayerReshapeWeights::configure(const ITensor *weights, const I
 
 Status NEConvolutionLayerReshapeWeights::validate(const ITensorInfo *weights, const ITensorInfo *biases, const ITensorInfo *output, bool transpose1xW)
 {
-    printf("%s: %d\n", __FILE__, __LINE__);
     ARM_COMPUTE_RETURN_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(weights, 1, DataType::QS8, DataType::QASYMM8, DataType::QS16, DataType::F16, DataType::F32);
-    printf("%s: %d\n", __FILE__, __LINE__);
     ARM_COMPUTE_RETURN_ERROR_ON(weights->num_dimensions() > 4);
-    printf("%s: %d\n", __FILE__, __LINE__);
     if(!is_data_type_quantized_asymmetric(weights->data_type()))
     {
-    printf("%s: %d\n", __FILE__, __LINE__);
         ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_DATA_TYPES(weights, output);
-    printf("%s: %d\n", __FILE__, __LINE__);
         ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_FIXED_POINT(weights, output);
-    printf("%s: %d\n", __FILE__, __LINE__);
     }
     // Check if bias are present, if yes they will be embedded to the weights matrix
     const bool append_bias = (biases != nullptr);
@@ -114,7 +108,6 @@ Status NEConvolutionLayerReshapeWeights::validate(const ITensorInfo *weights, co
         ARM_COMPUTE_RETURN_ERROR_ON(biases->dimension(0) != weights->dimension(3));
         ARM_COMPUTE_RETURN_ERROR_ON(biases->num_dimensions() > 1);
     }
-    printf("%s: %d\n", __FILE__, __LINE__);
 
     // Checks performed when biases are present
     if(append_bias)
@@ -123,22 +116,16 @@ Status NEConvolutionLayerReshapeWeights::validate(const ITensorInfo *weights, co
         ARM_COMPUTE_RETURN_ERROR_ON(biases->dimension(0) != weights->dimension(3));
         ARM_COMPUTE_RETURN_ERROR_ON(biases->num_dimensions() > 1);
     }
-    printf("%s: %d\n", __FILE__, __LINE__);
 
     if(transpose1xW)
     {
-    printf("%s: %d\n", __FILE__, __LINE__);
         TensorInfo weights_reshaped = weights->clone()->set_tensor_shape(get_reshaped_weights_shape(weights, append_bias));
-    printf("%s: %d\n", __FILE__, __LINE__);
         ARM_COMPUTE_RETURN_ON_ERROR(NEWeightsReshapeKernel::validate(weights, biases, &weights_reshaped));
-    printf("%s: %d\n", __FILE__, __LINE__);
         ARM_COMPUTE_RETURN_ON_ERROR(NEGEMMTranspose1xWKernel::validate(&weights_reshaped, output));
-    printf("%s: %d\n", __FILE__, __LINE__);
     }
     else
     {
         ARM_COMPUTE_RETURN_ON_ERROR(NEWeightsReshapeKernel::validate(weights, biases, output));
-    printf("%s: %d\n", __FILE__, __LINE__);
     }
 
     return Status{};
@@ -496,12 +483,10 @@ Status NEGEMMConvolutionLayer::validate(const ITensorInfo *input, const ITensorI
                                                    is_fully_connected_convolution, is_interleaved, is_quantized, is_activationlayer_enabled, mat_weights_cols, mat_weights_rows,
                                                    conv_w, conv_h, dilation);
 
-    printf("%s: %d\n", __FILE__, __LINE__);
     const Size2D kernel_weights = Size2D(kernel_width, kernel_height);
 
     ARM_COMPUTE_RETURN_ON_ERROR(status);
 
-    printf("%s: %d\n", __FILE__, __LINE__);
     std::unique_ptr<ITensorInfo> reshaped_weights = weights->clone();
     bool                         optimised_kernel = false;
 
@@ -522,13 +507,11 @@ Status NEGEMMConvolutionLayer::validate(const ITensorInfo *input, const ITensorI
     {
         // Validate im2col
         ARM_COMPUTE_RETURN_ON_ERROR(NEIm2ColKernel::validate(input, &im2_col_info, kernel_weights, conv_info, append_bias, false, false, dilation));
-    printf("%s: %d\n", __FILE__, __LINE__);
     }
     else if(append_bias)
     {
         // Validate add bias kernel
         ARM_COMPUTE_RETURN_ON_ERROR(NEArithmeticAdditionKernel::validate(output, biases, output, ConvertPolicy::SATURATE));
-    printf("%s: %d\n", __FILE__, __LINE__);
     }
 
     // Create GEMM output tensor
@@ -541,12 +524,10 @@ Status NEGEMMConvolutionLayer::validate(const ITensorInfo *input, const ITensorI
     if(optimised_kernel)
     {
         ARM_COMPUTE_RETURN_ERROR_ON(are_weights_reshaped);
-    printf("%s: %d\n", __FILE__, __LINE__);
 
         // Create tensor to store the reshaped weights
         reshaped_weights->set_tensor_shape(get_reshaped_weights_shape_conv(weights, append_bias, is_fully_connected_convolution));
         ARM_COMPUTE_RETURN_ON_ERROR(NEConvolutionLayerReshapeWeights::validate(weights, biases, reshaped_weights.get(), !is_fully_connected_convolution /* 1xW transpose */));
-    printf("%s: %d\n", __FILE__, __LINE__);
     }
     else if(!is_quantized)
     {
@@ -567,7 +548,6 @@ Status NEGEMMConvolutionLayer::validate(const ITensorInfo *input, const ITensorI
         // Create tensor to store the reshaped weights
         reshaped_weights->set_tensor_shape(get_reshaped_weights_shape_conv(weights, append_bias, is_fully_connected_convolution));
         ARM_COMPUTE_RETURN_ON_ERROR(NEConvolutionLayerReshapeWeights::validate(weights, biases, reshaped_weights.get(), !is_fully_connected_convolution /* 1xW transpose */));
-    printf("%s: %d\n", __FILE__, __LINE__);
         weights = reshaped_weights.get();
 
         // Validate GEMM interleave and multiply
@@ -577,46 +557,26 @@ Status NEGEMMConvolutionLayer::validate(const ITensorInfo *input, const ITensorI
             shape_interleaved.set(idx_width, shape_interleaved.x() * 4);
             shape_interleaved.set(idx_height, std::ceil(shape_interleaved.y() / 4.f));
             TensorInfo input_interleaved_info = input->clone()->set_tensor_shape(shape_interleaved);
-
-    printf("%s: %d\n", __FILE__, __LINE__);
             ARM_COMPUTE_RETURN_ON_ERROR(NEGEMMInterleave4x4Kernel::validate(&im2_col_info, &input_interleaved_info));
-    printf("%s: %d\n", __FILE__, __LINE__);
             ARM_COMPUTE_RETURN_ON_ERROR(NEGEMMMatrixMultiplyKernel::validate(&input_interleaved_info, weights, &gemm_output_info, 1.f, is_interleaved, GEMMReshapeInfo(shape_im2col[1],            // m
-                                                                                                                                                                       weights->tensor_shape()[0], // n
-                                                                                                                                                                       shape_im2col[0]) /* k */));
-printf("%s: %d\n", __FILE__, __LINE__);
+                                                                             weights->tensor_shape()[0], // n
+                                                                             shape_im2col[0]) /* k */));
         }
         else
         {
-
-    printf("%s: %d\n", __FILE__, __LINE__);
             ARM_COMPUTE_RETURN_ON_ERROR(NEGEMMMatrixMultiplyKernel::validate(&im2_col_info, weights, &gemm_output_info, 1.f, is_interleaved, GEMMReshapeInfo()));
-
-    printf("%s: %d\n", __FILE__, __LINE__);
         }
     }
     if(!is_nhwc)
     {
-
-    printf("%s: %d\n", __FILE__, __LINE__);
         ARM_COMPUTE_RETURN_ON_ERROR(NECol2ImKernel::validate(&gemm_output_info, output, Size2D(conv_w, conv_h)));
-
-    printf("%s: %d\n", __FILE__, __LINE__);
     }
 
-
-    printf("%s: %d\n", __FILE__, __LINE__);
     ARM_COMPUTE_RETURN_ERROR_ON_MSG((output->dimension(idx_width) != conv_w) || (output->dimension(idx_height) != conv_h), "Output shape does not match the expected one");
-
-    printf("%s: %d\n", __FILE__, __LINE__);
 
     if(act_info.enabled())
     {
-
-    printf("%s: %d\n", __FILE__, __LINE__);
         ARM_COMPUTE_RETURN_ON_ERROR(NEActivationLayer::validate(output, nullptr, act_info));
-
-    printf("%s: %d\n", __FILE__, __LINE__);
     }
 
     return Status{};
