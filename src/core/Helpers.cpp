@@ -27,17 +27,16 @@ using namespace arm_compute;
 
 Window arm_compute::calculate_max_window(const ValidRegion &valid_region, const Steps &steps, bool skip_border, BorderSize border_size)
 {
-    printf("%s:%d\n", __FILE__, __LINE__);
     if(!skip_border)
     {
         border_size = BorderSize(0);
     }
-            printf("%s:%d\n", __FILE__, __LINE__);
+
     const Coordinates &anchor = valid_region.anchor;
     const TensorShape &shape  = valid_region.shape;
-            printf("%s:%d\n", __FILE__, __LINE__);
+
     Window window;
-            printf("%s:%d\n", __FILE__, __LINE__);
+
     window.set(0, Window::Dimension(
                    // Skip the border left of the image
                    anchor[0] + border_size.left,
@@ -45,12 +44,11 @@ Window arm_compute::calculate_max_window(const ValidRegion &valid_region, const 
                    // Make sure the window width is a multiple of the step size
                    anchor[0] + border_size.left + ceil_to_multiple(std::max(0, static_cast<int>(shape[0]) - static_cast<int>(border_size.left) - static_cast<int>(border_size.right)), steps[0]),
                    steps[0]));
-            printf("%s:%d\n", __FILE__, __LINE__);
+
     size_t n = 1;
 
     if(anchor.num_dimensions() > 1)
     {
-            printf("%s:%d\n", __FILE__, __LINE__);
         window.set(1, Window::Dimension(
                        // Skip the border above the image
                        anchor[1] + border_size.top,
@@ -61,16 +59,13 @@ Window arm_compute::calculate_max_window(const ValidRegion &valid_region, const 
         ++n;
     }
 
-            printf("%s:%d\n", __FILE__, __LINE__);
     for(; n < anchor.num_dimensions(); ++n)
     {
-            printf("%s:%d\n", __FILE__, __LINE__);
         window.set(n, Window::Dimension(anchor[n], std::max<size_t>(1, shape[n])));
     }
 
     for(; n < Coordinates::num_max_dimensions; ++n)
     {
-            printf("%s:%d\n", __FILE__, __LINE__);
         window.set(n, Window::Dimension(0, 1));
     }
 
